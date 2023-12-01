@@ -1,7 +1,9 @@
 from common import deserialize_input_file
 
-part1_input_list = deserialize_input_file("01a_test_input.txt")
-part2_input_list = deserialize_input_file("01b_test_input.txt")
+part1_input_list_test = deserialize_input_file("01a_test_input.txt")
+part2_input_list_test = deserialize_input_file("01b_test_input.txt")
+part1_input_list_puzzle = deserialize_input_file("01a_puzzle_input.txt")
+part2_input_list_puzzle = deserialize_input_file("01b_puzzle_input.txt")
 
 
 def find_digit_part_1(input_str: str, direction: int = 1) -> int:
@@ -33,7 +35,7 @@ def run_part_1(input_list: list[str]) -> int:
     for row in input_list:
         first_digit = find_digit_part_1(row, direction=1)
         second_digit = find_digit_part_1(row, direction=-1)
-        print(f"{first_digit}{second_digit}")
+        # print(f"{first_digit}{second_digit}")
 
         # math and increment running total
         row_value = 10 * first_digit + second_digit
@@ -124,3 +126,10 @@ def run_part_2(input_list: list[str]) -> int:
         total_rows_value += row_value
 
     return total_rows_value
+
+print("Part 1:")
+# print(run_part_1(part1_input_list_test))
+print(run_part_1(part1_input_list_puzzle))
+print("\nPart 2:")
+# print(run_part_2(part2_input_list_test))
+print(run_part_2(part2_input_list_puzzle))
