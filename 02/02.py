@@ -3,8 +3,9 @@ from common import deserialize_input_file
 part1_input_list_test = deserialize_input_file("02a_test_input.txt")
 part1_input_list_puzzle = deserialize_input_file("02a_puzzle_input.txt")
 
-# part2_input_list_test = deserialize_input_file("02b_test_input.txt")
-# part2_input_list_puzzle = deserialize_input_file("02b_puzzle_input.txt")
+# part 2 input is the same as part 1
+part2_input_list_test = part1_input_list_test
+part2_input_list_puzzle = part1_input_list_puzzle
 
 CUBE_COUNTS = {"red": 12, "green": 13, "blue": 14}
 
@@ -60,6 +61,22 @@ def is_valid_game(game_list: list) -> bool:
         ]
     )
 
+def get_game_cube_minimums(game_list: list) -> dict:
+    """
+    returns a dict of the minimum number of cubes needed for a single game
+    """
+    # initialize dict of minimums to 0 for each color
+    game_cube_minimums = {color: 0 for color in CUBE_COUNTS.keys()}
+
+    for game_set in game_list:
+        for color_count in game_set:
+            for color, count in color_count.items():
+                # replace the game minimum if the set count for that color is greater than current minimum
+                if count > game_cube_minimums[color]:
+                    game_cube_minimums[color] = count
+
+    return game_cube_minimums
+
 
 def run_part_1(input_list: list[str]):
 
@@ -76,12 +93,29 @@ def run_part_1(input_list: list[str]):
     return sum(valid_games)
 
 
+def run_part_2(input_list: list[str]):
+
+    game_product_values = []
+
+    game_sets_dict = build_game_sets(input_list)
+
+    for game, game_list in game_sets_dict.items():
+        game_min_cube_counts = get_game_cube_minimums(game_list)
+        game_product_value = 1
+        for color_count in game_min_cube_counts.values():
+            game_product_value *= color_count
+
+        game_product_values.append(game_product_value)
+
+    return sum(game_product_values)
+
+
 # if __name__ == "__main__":
 print("Part 1:")
-print(f"Test input yields: {run_part_1(part1_input_list_test)}")
-print(f"Puzzle input yields: {run_part_1(part1_input_list_puzzle)}")
+print(f"  Test input yields: {run_part_1(part1_input_list_test)}")
+print(f"  Puzzle input yields: {run_part_1(part1_input_list_puzzle)}")
 
 print("\nPart 2:")
-# print(run_part_2(part2_input_list_test))
-# print(run_part_2(part2_input_list_puzzle))
+print(f"  Test input yields: {run_part_2(part2_input_list_test)}")
+print(f"  Puzzle input yields: {run_part_2(part2_input_list_puzzle)}")
 #     pass
