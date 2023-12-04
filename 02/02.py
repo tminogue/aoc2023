@@ -9,6 +9,7 @@ part2_input_list_puzzle = part1_input_list_puzzle
 
 CUBE_COUNTS = {"red": 12, "green": 13, "blue": 14}
 
+
 def build_game_sets(game_list: list[str]):
     """
     Build a list of sets of colors for each game
@@ -51,15 +52,13 @@ def is_valid_game_set(game_set_cube_color_counts: list) -> bool:
                 return False
     return True
 
+
 def is_valid_game(game_list: list) -> bool:
     """
     tests if an entire game is valid: all game sets are valid
     """
-    return all(
-        [
-            is_valid_game_set(game_set) for game_set in game_list
-        ]
-    )
+    return all([is_valid_game_set(game_set) for game_set in game_list])
+
 
 def get_game_cube_minimums(game_list: list) -> dict:
     """
@@ -79,7 +78,6 @@ def get_game_cube_minimums(game_list: list) -> dict:
 
 
 def run_part_1(input_list: list[str]):
-
     valid_games = []
 
     game_sets_dict = build_game_sets(input_list)
@@ -94,7 +92,6 @@ def run_part_1(input_list: list[str]):
 
 
 def run_part_2(input_list: list[str]):
-
     game_product_values = []
 
     game_sets_dict = build_game_sets(input_list)

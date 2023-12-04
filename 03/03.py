@@ -8,8 +8,8 @@ part2_input_list_test = deserialize_input_file("03b_test_input.txt")
 
 
 def is_symbol(char: str) -> bool:
-
     return not (char.isdigit() or char == ".")
+
 
 def build_matrix(input_list: list):
     """
@@ -25,9 +25,14 @@ def build_matrix(input_list: list):
     for y in range(num_rows):
         for x in range(num_cols):
             coordinate_value = input_list[y][x]
-            matrix[y][x]=(coordinate_value, coordinate_value.isdigit(), is_symbol(coordinate_value))
+            matrix[y][x] = (
+                coordinate_value,
+                coordinate_value.isdigit(),
+                is_symbol(coordinate_value),
+            )
 
     return matrix
+
 
 def get_valid_numbers_in_rows(matrix: list) -> list[dict]:
     """
@@ -62,7 +67,6 @@ def get_valid_numbers_in_rows(matrix: list) -> list[dict]:
 
                 x += 1
 
-
             else:
                 # if there are values in the current number list, add the concatenated number
                 # to the row number list, and clear the current number list and increment column counter
@@ -83,12 +87,11 @@ def get_valid_numbers_in_rows(matrix: list) -> list[dict]:
 
     return valid_numbers
 
-def has_adjacent_symbol(y_index, x_start_index, x_end_index, matrix: list) -> bool:
 
+def has_adjacent_symbol(y_index, x_start_index, x_end_index, matrix: list) -> bool:
     last_row_index = len(matrix) - 1
     # x_start_index = min(0, x_start_index)
     # x_end_index = max(last_col_index, x_end_index)
-
 
     adjacency_checks = []
     # check adjacency
@@ -138,9 +141,10 @@ def run_part_1(input_list: list[str]) -> int:
 
     return sum([int(value) for value in valid_numbers])
 
-def run_part_2(input_list: list[str]) -> int:
 
+def run_part_2(input_list: list[str]) -> int:
     pass
+
 
 print("Part 1:")
 print(f"  Test input yields: {run_part_1(part1_input_list_test)}")

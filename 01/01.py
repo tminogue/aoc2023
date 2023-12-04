@@ -28,8 +28,8 @@ def find_digit_part_1(input_str: str, direction: int = 1) -> int:
         else:
             raise ValueError(f"Couldn't find a damn digit in {input_str}")
 
-def run_part_1(input_list: list[str]) -> int:
 
+def run_part_1(input_list: list[str]) -> int:
     total_rows_value: int = 0
 
     for row in input_list:
@@ -78,7 +78,6 @@ def run_part_2_failed_attempt(input_list: list[str]) -> int:
     return run_part_1(transformed_list)
 
 
-
 def find_digit_part_2(input_str: str, direction: int = 1) -> int:
     """
     direction: must be -1 or 1 to determine indexing direction
@@ -113,7 +112,6 @@ def find_digit_part_2(input_str: str, direction: int = 1) -> int:
 
 
 def run_part_2(input_list: list[str]) -> int:
-
     total_rows_value: int = 0
 
     for row in input_list:
@@ -126,6 +124,7 @@ def run_part_2(input_list: list[str]) -> int:
         total_rows_value += row_value
 
     return total_rows_value
+
 
 print("Part 1:")
 # print(run_part_1(part1_input_list_test))
