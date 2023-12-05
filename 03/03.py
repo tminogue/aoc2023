@@ -3,8 +3,8 @@ from common import deserialize_input_file
 part1_input_list_test = deserialize_input_file("03a_test_input.txt")
 part1_input_list_puzzle = deserialize_input_file("03a_puzzle_input.txt")
 
-part2_input_list_test = deserialize_input_file("03b_test_input.txt")
-# part2_input_list_puzzle = deserialize_input_file("03b_puzzle_input.txt")
+part2_input_list_test = part1_input_list_test
+part2_input_list_puzzle = part1_input_list_puzzle
 
 
 def is_symbol(char: str) -> bool:
@@ -17,6 +17,7 @@ def build_matrix(input_list: list):
         - the character at the coordinate
         - if that character is a digit
         - if that character is a symbol
+        - if that character is a star (*)
     """
     num_rows = len(input_list)
     num_cols = len(input_list[0])
@@ -29,6 +30,7 @@ def build_matrix(input_list: list):
                 coordinate_value,
                 coordinate_value.isdigit(),
                 is_symbol(coordinate_value),
+                coordinate_value == "*"
             )
 
     return matrix
@@ -135,6 +137,123 @@ def has_adjacent_symbol(y_index, x_start_index, x_end_index, matrix: list) -> bo
     return any(adjacency_checks)
 
 
+def get_all_number_digits(y: int, x_start:int, matrix:list) -> str:
+    """
+    traverse all characters in row and return the complete number string
+    """
+    last_col_index = len(matrix[0]) - 1
+
+    # first add the first digit found to list of digits
+    digits = [matrix[y][x_start][0]]
+
+    # add all digits to the left to the start of the list
+    x = x_start - 1
+    while x >= 0:
+        current_value = matrix[y][x]
+        if current_value[1]:
+            digits = [current_value[0]] + digits
+            x -= 1
+        else:
+            break
+
+    # add all digits to the right to the end of the list
+    x = x_start + 1
+    while x <= last_col_index:
+        current_value = matrix[y][x]
+        if current_value[1]:
+            digits.append(current_value[0])
+            x += 1
+        else:
+            break
+
+    return "".join(digits)
+
+
+def get_star_adjacent_numbers(matrix: list):
+    last_row_index = len(matrix) - 1
+    last_col_index = len(matrix[0]) - 1
+    adjacent_numbers_list: list[list] = []
+
+    # iterate over matrix to find stars, and test for adjacent numbers
+    y = 0
+    while y <= last_row_index:
+        x = 0
+        while x <= last_col_index:
+            current_coordinates = matrix[y][x]
+            # keep track of numbers found in a set, in order to not duplicate
+            current_adjacent_numbers = set()
+            # fourth [3] element of tuple is boolean for star char
+            # second [1] element of tuple is boolean for digit char
+            if current_coordinates[3]:
+                # look left
+                if x > 0:
+                    left_pos = matrix[y][x-1]
+                    if left_pos[1]:
+                        # current_adjacent_numbers.append(left_pos)
+                        number = get_all_number_digits(y, x-1, matrix)
+                        current_adjacent_numbers.add(number)
+
+                # look right
+                if x < last_row_index:
+                    right_pos = matrix[y][x+1]
+                    if right_pos[1]:
+                        number = get_all_number_digits(y, x+1, matrix)
+                        current_adjacent_numbers.add(number)
+
+                # look up-left, up, up-right
+                if y > 0:
+                    # up
+                    up_pos = matrix[y-1][x]
+                    if up_pos[1]:
+                        number = get_all_number_digits(y-1,x,matrix)
+                        current_adjacent_numbers.add(number)
+
+                    # up-left
+                    up_left_pos = matrix[y - 1][x - 1]
+                    if x > 0:
+                        if up_left_pos[1]:
+                            number = get_all_number_digits(y - 1, x -1 , matrix)
+                            current_adjacent_numbers.add(number)
+                    # up-right
+                    up_right_pos = matrix[y - 1][x + 1]
+                    if x < last_row_index:
+                        if up_right_pos[1]:
+                            number = get_all_number_digits(y - 1, x + 1, matrix)
+                            current_adjacent_numbers.add(number)
+
+                # look down-left, down, down_right
+                if y < last_row_index:
+                    # down
+                    down_pos = matrix[y + 1][x]
+                    if down_pos[1]:
+                        number = get_all_number_digits(y + 1, x, matrix)
+                        current_adjacent_numbers.add(number)
+
+                    # down-left
+                    down_left_pos = matrix[y + 1][x - 1]
+                    if x > 0:
+                        if down_left_pos[1]:
+                            number = get_all_number_digits(y + 1, x - 1, matrix)
+                            current_adjacent_numbers.add(number)
+                    # down-right
+                    down_right_pos = matrix[y + 1][x + 1]
+                    if x < last_row_index:
+                        if down_right_pos[1]:
+                            number = get_all_number_digits(y + 1, x + 1, matrix)
+                            current_adjacent_numbers.add(number)
+
+            if current_adjacent_numbers:
+                # add each list of adjacent numbers to overall list
+                # cast set to list to allow iteration on result
+                adjacent_numbers_list.append(list(current_adjacent_numbers))
+
+            x += 1
+        y += 1
+
+    return adjacent_numbers_list
+
+
+
 def run_part_1(input_list: list[str]) -> int:
     matrix = build_matrix(input_list)
     valid_numbers = get_valid_numbers_in_rows(matrix)
@@ -143,6 +262,19 @@ def run_part_1(input_list: list[str]) -> int:
 
 
 def run_part_2(input_list: list[str]) -> int:
+    gear_list = []
+
+    matrix = build_matrix(input_list)
+    gear_set_list = get_star_adjacent_numbers(matrix)
+
+    for gear_set in gear_set_list:
+        if len(gear_set) == 2:
+            gear_ratio = int(gear_set[0]) * int(gear_set[1])
+            gear_list.append(gear_ratio)
+
+    return sum([ratio for ratio in gear_list])
+
+
     pass
 
 
@@ -152,4 +284,4 @@ print(f"  Puzzle input yields: {run_part_1(part1_input_list_puzzle)}")
 
 print("\nPart 2:")
 print(f"  Test input yields: {run_part_2(part2_input_list_test)}")
-# print(f"  Puzzle input yields: {run_part_2(part2_input_list_puzzle)}")
+print(f"  Puzzle input yields: {run_part_2(part2_input_list_puzzle)}")
