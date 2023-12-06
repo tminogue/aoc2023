@@ -1,7 +1,7 @@
-from common import deserialize_input_file
-#import collections
+# import collections
 import re
 
+from common import deserialize_input_file
 
 part1_input_list_test = deserialize_input_file("04a_test_input.txt")
 part1_input_list_puzzle = deserialize_input_file("04a_puzzle_input.txt")

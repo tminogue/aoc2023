@@ -30,7 +30,7 @@ def build_matrix(input_list: list):
                 coordinate_value,
                 coordinate_value.isdigit(),
                 is_symbol(coordinate_value),
-                coordinate_value == "*"
+                coordinate_value == "*",
             )
 
     return matrix
@@ -137,7 +137,7 @@ def has_adjacent_symbol(y_index, x_start_index, x_end_index, matrix: list) -> bo
     return any(adjacency_checks)
 
 
-def get_all_number_digits(y: int, x_start:int, matrix:list) -> str:
+def get_all_number_digits(y: int, x_start: int, matrix: list) -> str:
     """
     traverse all characters in row and return the complete number string
     """
@@ -187,32 +187,32 @@ def get_star_adjacent_numbers(matrix: list):
             if current_coordinates[3]:
                 # look left
                 if x > 0:
-                    left_pos = matrix[y][x-1]
+                    left_pos = matrix[y][x - 1]
                     if left_pos[1]:
                         # current_adjacent_numbers.append(left_pos)
-                        number = get_all_number_digits(y, x-1, matrix)
+                        number = get_all_number_digits(y, x - 1, matrix)
                         current_adjacent_numbers.add(number)
 
                 # look right
                 if x < last_row_index:
-                    right_pos = matrix[y][x+1]
+                    right_pos = matrix[y][x + 1]
                     if right_pos[1]:
-                        number = get_all_number_digits(y, x+1, matrix)
+                        number = get_all_number_digits(y, x + 1, matrix)
                         current_adjacent_numbers.add(number)
 
                 # look up-left, up, up-right
                 if y > 0:
                     # up
-                    up_pos = matrix[y-1][x]
+                    up_pos = matrix[y - 1][x]
                     if up_pos[1]:
-                        number = get_all_number_digits(y-1,x,matrix)
+                        number = get_all_number_digits(y - 1, x, matrix)
                         current_adjacent_numbers.add(number)
 
                     # up-left
                     up_left_pos = matrix[y - 1][x - 1]
                     if x > 0:
                         if up_left_pos[1]:
-                            number = get_all_number_digits(y - 1, x -1 , matrix)
+                            number = get_all_number_digits(y - 1, x - 1, matrix)
                             current_adjacent_numbers.add(number)
                     # up-right
                     up_right_pos = matrix[y - 1][x + 1]
@@ -253,7 +253,6 @@ def get_star_adjacent_numbers(matrix: list):
     return adjacent_numbers_list
 
 
-
 def run_part_1(input_list: list[str]) -> int:
     matrix = build_matrix(input_list)
     valid_numbers = get_valid_numbers_in_rows(matrix)
@@ -273,7 +272,6 @@ def run_part_2(input_list: list[str]) -> int:
             gear_list.append(gear_ratio)
 
     return sum([ratio for ratio in gear_list])
-
 
     pass
 
