@@ -152,7 +152,14 @@ def run_part_2(input_list):
                 if overlap_start < overlap_end:
                     # when ranges overlap, add the transformed sub-range to list of new ranges
                     # transformation offset of new start and end positions is the length of the overlap
-                    new_ranges.append((overlap_start - source_range_start + destination_range_start, overlap_end - source_range_start + destination_range_start))
+                    new_ranges.append(
+                        (
+                            overlap_start
+                            - source_range_start
+                            + destination_range_start,
+                            overlap_end - source_range_start + destination_range_start,
+                        )
+                    )
                     # handle non-overlapping subrange of current 'seed' range
                     if overlap_start > seed_range_start:
                         seed_ranges.append((overlap_start, seed_range_start))

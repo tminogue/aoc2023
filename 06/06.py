@@ -1,6 +1,7 @@
-from common import deserialize_input_file
-import re
 import math
+import re
+
+from common import deserialize_input_file
 
 part1_input_list_test = deserialize_input_file("06a_test_input.txt")
 part1_input_list_puzzle = deserialize_input_file("06a_puzzle_input.txt")
@@ -9,10 +10,15 @@ part2_input_list_test = part1_input_list_test
 part2_input_list_puzzle = part1_input_list_puzzle
 
 
-race_times = [int(s) for s in re.split(" +",re.split(":", part1_input_list_test[0])[1]) if s]
-race_records = [int(s) for s in re.split(" +",re.split(":", part1_input_list_test[1])[1]) if s]
+race_times = [
+    int(s) for s in re.split(" +", re.split(":", part1_input_list_test[0])[1]) if s
+]
+race_records = [
+    int(s) for s in re.split(" +", re.split(":", part1_input_list_test[1])[1]) if s
+]
 
 races = [(race_times[i], race_records[i]) for i in range(len(race_times))]
+
 
 def get_winning_count(race_time: int, race_record: int) -> int:
     """
@@ -40,25 +46,26 @@ def get_winning_count(race_time: int, race_record: int) -> int:
 
 def run_part_1(input_list):
     race_times = [int(s) for s in re.split(" +", re.split(":", input_list[0])[1]) if s]
-    race_records = [int(s) for s in re.split(" +", re.split(":", input_list[1])[1]) if s]
+    race_records = [
+        int(s) for s in re.split(" +", re.split(":", input_list[1])[1]) if s
+    ]
 
     races = [(race_times[i], race_records[i]) for i in range(len(race_times))]
 
     winning_race_counts = []
     for race in races:
         race_time, race_record = race[0], race[1]
-        winning_race_counts.append(get_winning_count(race_time,race_record))
+        winning_race_counts.append(get_winning_count(race_time, race_record))
     # print(winning_race_counts)
 
     return math.prod(winning_race_counts)
+
 
 def run_part_2(input_list):
     race_time = int(input_list[0].split(":")[1].replace(" ", ""))
     race_record = int(input_list[1].split(":")[1].replace(" ", ""))
 
     return get_winning_count(race_time, race_record)
-
-
 
 
 print("Part 1:")
