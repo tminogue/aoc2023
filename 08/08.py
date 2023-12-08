@@ -1,3 +1,4 @@
+import math
 from common import deserialize_input_file
 
 part1_input_list_test = deserialize_input_file("08a_test_input.txt")
@@ -55,30 +56,33 @@ def run_part_2(input_list: list[str]) -> int:
     node_map = build_node_map(input_list)
 
     start_nodes = [node for node in node_map.keys() if node[2] == "A"]
-    current_nodes = start_nodes
 
-    all_paths_at_destination = False
-    hop_count = 0
-    move_index = 0
-    while not all_paths_at_destination:
-        if hop_count % 1_000_000 == 0:
-            print(f"hop count: {int(hop_count/1_000_000)} million")
-        hop_count += 1
+    hop_counts = []
+
+    for start_node in start_nodes:
+        dest_node = "..."
+
+        hop_count = 0
+        move_index = 0
         direction = MOVE_MAP[moves[move_index]]
 
-        next_nodes = [node_map[node][direction] for node in current_nodes]
-        all_paths_at_destination = all([node[2] == "Z" for node in next_nodes])
-
-        if all_paths_at_destination:
-            break
-        else:
-            current_nodes = next_nodes
+        while dest_node[2] != "Z":
+            hop_count += 1
+            dest_node = node_map[start_node][direction]
+            # print(start, destination)
+            start_node = dest_node
             move_index += 1
             # reset the index to the start if we reach the end of the moves list
             if move_index >= len(moves):
                 move_index = 0
+            direction = MOVE_MAP[moves[move_index]]
 
-    return hop_count
+        hop_counts.append(hop_count)
+    print(hop_counts)
+
+    math.lcm(*hop_counts)
+
+    return math.lcm(*hop_counts)
 
 
 print("Part 1:")
