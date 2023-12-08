@@ -3,7 +3,7 @@ from common import deserialize_input_file
 part1_input_list_test = deserialize_input_file("08a_test_input.txt")
 part1_input_list_puzzle = deserialize_input_file("08a_puzzle_input.txt")
 
-part2_input_list_test = part1_input_list_test
+part2_input_list_test = deserialize_input_file("08b_test_input.txt")
 part2_input_list_puzzle = part1_input_list_puzzle
 
 MOVE_MAP = {"L": 0, "R": 1}
@@ -48,27 +48,35 @@ def run_part_1(input_list: list[str]) -> int:
     return hop_count
 
 
+# def get_desination_node(node_map, current_node, direction):
+#     return node_map[current_node][direction]
 def run_part_2(input_list: list[str]) -> int:
     moves = input_list[0]
     node_map = build_node_map(input_list)
 
-    start = "AAA"
-    destination = None
+    start_nodes = [node for node in node_map.keys() if node[2] == "A"]
+    current_nodes = start_nodes
 
+    all_paths_at_destination = False
     hop_count = 0
     move_index = 0
-    direction = MOVE_MAP[moves[move_index]]
-
-    while destination != "ZZZ":
+    while not all_paths_at_destination:
+        if hop_count % 1_000_000 == 0:
+            print(f"hop count: {int(hop_count/1_000_000)} million")
         hop_count += 1
-        destination = node_map[start][direction]
-        # print(start, destination)
-        start = destination
-        move_index += 1
-        # reset the index to the start if we reach the end of the moves list
-        if move_index >= len(moves):
-            move_index = 0
         direction = MOVE_MAP[moves[move_index]]
+
+        next_nodes = [node_map[node][direction] for node in current_nodes]
+        all_paths_at_destination = all([node[2] == "Z" for node in next_nodes])
+
+        if all_paths_at_destination:
+            break
+        else:
+            current_nodes = next_nodes
+            move_index += 1
+            # reset the index to the start if we reach the end of the moves list
+            if move_index >= len(moves):
+                move_index = 0
 
     return hop_count
 
