@@ -151,7 +151,7 @@ def run_part_1(input_list: list) -> int:
     # break ties with first value of card in list
     ranked_hands = sorted(
         hands_list,
-        key=lambda x: (x[0], x[1][0], x[1][1], x[1][2], x[1][3], x[1][4]),
+        key=lambda x: (x[0], x[1]),
         reverse=False,
     )
 
@@ -183,7 +183,7 @@ def run_part_2(input_list: list) -> int:
     # break ties with first value of card in list
     ranked_hands = sorted(
         hands_list,
-        key=lambda x: (x[0], x[1][0], x[1][1], x[1][2], x[1][3], x[1][4]),
+        key=lambda x: (x[0], x[1]),
         reverse=False,
     )
 
